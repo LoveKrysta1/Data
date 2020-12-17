@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weapon.repository.AccountRepository">
+
+    <insert id="save" parameterType="com.weapon.entity.Account">
+      insert into t_account(username,password,age) values(#{username},#{password},#{age})
+    </insert>
+
+<!--    <update id="update" parameterType="com.weapon.entity.Account">-->
+<!--        update t_account set username = #{username},password = #{password},age=#{age} where id = #{id}-->
+<!--    </update>-->
+
+    <!-- update之前先判斷 -->
+    <update id="update" parameterType="com.weapon.entity.Account">
+        update t_account
+        <set>
+            <if test="username!=null">
+                username = #{username},
+            </if>
+            <if test="password!=null">
+                password = #{password},
+            </if>
+            <if test="age!= null">
+                age = #{age}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 動態sql語句查詢 -->
+    <select id="findByAccount" parameterType="com.weapon.entity.Account" resultType="com.weapon.entity.Account">
+        select * from t_account
+        <where>
+            <if test="id !=0">
+                id = #{id}
+            </if>
+            <if test="username != null">
+                and username = #{username}
+            </if>
+            <if test="password != null">
+                and password = #{password}
+            </if>
+            <if test="age != 0">
+                and age = #{age}
+            </if>
+        </where>
+    </select>
+
+<!--    <select id="findByAccount" parameterType="com.southwind.entity.Account" resultType="com.southwind.entity.Account">-->
+<!--        select * from t_account-->
+<!--        <where>-->
+<!--            <choose>-->
+<!--                <when test="id!=0">-->
+<!--                    id = #{id}-->
+<!--                </when>-->
+<!--                <when test="username!=null">-->
+<!--                    and username = #{username}-->
+<!--                </when>-->
+<!--                <when test="password!=null">-->
+<!--                    and password = #{password}-->
+<!--                </when>-->
+<!--                <when test="age!=0">-->
+<!--                    and age = #{age}-->
+<!--                </when>-->
+<!--            </choose>-->
+<!--        </where>-->
+<!--    </select>-->
+
+    <!-- trim 標籤 -->
+<!--    <select id="findByAccount" parameterType="com.southwind.entity.Account" resultType="com.southwind.entity.Account">-->
+<!--        select * from t_account-->
+<!--        <trim prefix="where" prefixOverrides="and">-->
+<!--            <if test="id!=0">-->
+<!--                id = #{id}-->
+<!--            </if>-->
+<!--            <if test="username!=null">-->
+<!--                and username = #{username}-->
+<!--            </if>-->
+<!--            <if test="password!=null">-->
+<!--                and password = #{password}-->
+<!--            </if>-->
+<!--            <if test="age!=0">-->
+<!--                and age = #{age}-->
+<!--            </if>-->
+<!--        </trim>-->
+<!--    </select>-->
+
+    <!-- 就是替代 in -->
+    <select id="findByIds" parameterType="com.southwind.entity.Account" resultType="com.southwind.entity.Account">
+        select * from t_account
+        <where>
+            <foreach collection="ids" open="id in (" close=")" item="id" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+
+
+
+
+
+
+
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete from t_account where id = #{id}
+    </delete>
+
+    <select id="findAll" resultType="com.weapon.entity.Account">
+        select * from t_account
+    </select>
+
+    <select id="findById" parameterType="java.lang.Long" resultType="com.weapon.entity.Account">
+        select * from t_account where id = #{id}
+    </select>
+
+    <select id="findByName" parameterType="java.lang.String" resultType="com.weapon.entity.Account">
+        select * from t_account where username = #{username}
+    </select>
+
+    <select id="findByNameAndAge" resultType="com.weapon.entity.Account">
+        select * from t_account where username = #{param1} and age = #{param2}
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(id) from t_account
+    </select>
+
+    <select id="findNameById" parameterType="java.lang.Long" resultType="java.lang.String">
+        select username from t_account where id = #{id}
+    </select>
+
+
+
+
+
+
+
+
+</mapper>

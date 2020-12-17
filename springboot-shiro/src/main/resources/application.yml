@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test2?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: twp19931226
+
+  # 配置視圖層解析
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+
+# 打印sql語句
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

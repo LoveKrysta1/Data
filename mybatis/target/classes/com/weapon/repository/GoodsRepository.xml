@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weapon.repository.GoodsRepository">
+
+    <resultMap id="goodsMap" type="com.weapon.entity.Goods">
+        <id column="gid" property="id"></id>
+        <result column="gname" property="name"></result>
+        <collection property="customer" ofType="com.weapon.entity.Customer">
+            <id column="cid" property="id"/>
+            <result column="cname" property="name"></result>
+        </collection>
+    </resultMap>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="goodsMap">
+        select c.id as cid ,c.name as cname,g.id as gid,g.name as gname  from customer c , goods g , customer_goods cg where
+        g.id = #{id} and c.id = cg.cid and cg.gid = g.id
+    </select>
+
+
+
+
+</mapper>
